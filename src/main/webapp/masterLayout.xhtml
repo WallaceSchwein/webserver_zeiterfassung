@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html>
+
+<!-- ===========================================================================
+masterLayout.xhtml - Masterlayout für das Zeiterfassungstool.
+					enthält Headder und Footer, sowie eine Content-Sektion, 
+					in die dynamisch INhalte eingebunden werden können.                    
+============================================================================ -->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<h:head>
+	<h:outputStylesheet library="css" name="myCss.css" />
+	<title><ui:insert name="title">Default title</ui:insert></title>
+	<meta charset="utf-8" />
+</h:head>
+
+<h:body>
+
+		<!-- CTRL+SHIFT+hotkey zeigt debug info an, sofern 
+     javax.faces.FACELETS_DEVELOPMENT auf true gesetzt ist (der von Eclipse 
+     angezeigte EL Syntax error scheint ein Eclipse bug zu sein) -->
+
+		<ui:debug hotkey="x" rendered="#{initParam['javax.faces.FACELETS_DEVELOPMENT']}" />
+
+		<div id="header">
+			<ui:insert name="header">
+				<ui:include src="header.xhtml" />
+			</ui:insert>
+		</div>
+
+		<h:messages globalOnly="false" showDetail="true" showSummary="true"
+			infoClass="msgInfo" warnClass="msgWarning" errorClass="msgError"
+			fatalClass="msgFatal" />
+
+		<div id="content">
+			<h:messages globalOnly="true" />
+			<ui:insert name="content" />
+		</div>
+
+		<div id="footer">
+			<ui:insert name="footer">
+				<ui:include src="footer.xhtml" />
+			</ui:insert>
+		</div>
+
+</h:body>
+
+</html>

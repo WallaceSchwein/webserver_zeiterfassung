@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+
+<!-- ===========================================================================
+timetable.xhtml - 	Die Seite stellt ein Tool zur Zeiterfassung für Mitarbeiter zur Verfügung. 
+					Zum korrekten Eintragen der Arbeitszeit, für einen Tag, muss ein User ein Projekt 
+					und ein dazu gehöriges Modul auswählen.            
+============================================================================ -->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<h:outputStylesheet library="css" name="myCss.css" />
+	<title>Footer</title>
+	<meta charset="utf-8" />
+</h:head>
+
+<h:body>
+	<h:form class="top-h">
+
+		<div class="footer">
+			<hr />
+			<p class="margin-t-b">
+				Dies ist der aufwendig von teuren Profis designte und universal
+				eingebundene exklusive Footer der Roman Empire GmbH
+			</p>
+			<h:panelGrid columns="2" class="margin-l-r">
+				<h:graphicImage library="img" name="map.png" alt="Map Roman Empire" />
+				<h:outputText value="...never trust a barbarian!" styleClass="branding" id="bottomline" />
+			</h:panelGrid>
+		</div>
+
+	</h:form>
+</h:body>
+</html>

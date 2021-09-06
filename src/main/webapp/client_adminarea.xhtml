@@ -1,0 +1,213 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+
+<!-- ===========================================================================
+timetable.xhtml - 	Die Seite stellt ein Tool für den Admin bereit, mit welchem er die verschiedenen User, 
+					Projekte, Projektmodule und Zuordnungen verwalten kann. Der Admin muss sich mit dem 
+					Datenbankpasswort verifizieren um Änderungen dieser Art durchzuführen.         
+============================================================================ -->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<h:outputStylesheet library="css" name="myCss.css" />
+	<title>Browse Student</title>
+	<meta charset="utf-8" />
+</h:head>
+
+<h:body>
+	<ui:composition template="/masterLayout.xhtml">
+
+		<ui:define name="title">Adminbereich</ui:define>
+
+		<ui:define name="content">
+
+			<p class="sub-h margin-l-r">Hier können Sie Nutzer, Projekte und
+				Module hinzufügen/löschen oder Zuordnungen vornehmen.</p>
+
+			<h:form>
+				<div class="card margin-l-r">
+					<p:growl id="msgs" showDetail="true"
+						skipDetailIfEqualsSummary="true" />
+
+					<p:panel header="1. Userverwaltung" style="margin-bottom:10px;">
+
+						<p>
+							Bitte tragen Sie einen neuen Mitarbeiter ein oder wählen
+							Sie den Mitarbeiter, den Sie löschen möchten:
+						</p>
+
+						<hr class="horizontal" />
+
+						<h:panelGrid columns="3" cellpadding="5">
+
+							<p:outputLabel for="add-user" value="Nutzer hinzufügen: " />
+							<p:inputText id="add-user" value="#{mbAdminArea.addUser}" />
+							<p:commandButton value="Add" update="msgs"
+								action="#{mbAdminArea.onAddUser}" />
+
+							<p:outputLabel for="delete-user" value="Nutzer löschen: " />
+							<p:selectOneMenu id="delete-user" value="#{mbAdminArea.delUser}"
+								style="width:150px">
+								<f:selectItem itemLabel="Select User" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems value="#{mbAdminArea.userData}" />
+							</p:selectOneMenu>
+							<p:commandButton value="Delete" update="msgs"
+								action="#{mbAdminArea.onDelUser}" />
+
+						</h:panelGrid>
+
+					</p:panel>
+				</div>
+
+				<div class="card margin-l-r">
+
+					<p:panel header="2. Projektverwaltung" style="margin-bottom:10px;">
+
+						<p>Bitte tragen Sie ein neues Projekt ein oder wählen Sie das
+							abgeschlossene Projekt, welches Sie löschen möchten:</p>
+
+						<hr class="horizontal" />
+
+						<h:panelGrid columns="3" cellpadding="5">
+
+							<p:outputLabel for="add-project" value="Projekt anlegen: " />
+							<p:inputText id="add-project" value="#{mbAdminArea.addProject}" />
+							<p:commandButton value="Add" update="msgs"
+								action="#{mbAdminArea.onAddProject}" />
+
+							<p:outputLabel for="delete-project" value="Projekt löschen: " />
+							<p:selectOneMenu id="delete-project"
+								value="#{mbAdminArea.delProject}" style="width:150px">
+								<f:selectItem itemLabel="Select Project" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems value="#{mbAdminArea.projectData}" />
+							</p:selectOneMenu>
+							<p:commandButton value="Delete" update="msgs"
+								action="#{mbAdminArea.onDelProject}" />
+
+						</h:panelGrid>
+
+					</p:panel>
+				</div>
+
+				<div class="card margin-l-r">
+
+					<p:panel header="3. Modulverwaltung" style="margin-bottom:10px;">
+
+						<p>
+							Bitte wählen Sie zunächst das Projekt, dessen Module Sie
+							verwalten möchten. <br /> Bitte tragen Sie dann ein Modul ein
+							welches Sie hinzufügen- oder wählen Sie das Modul, welches Sie
+							löschen möchten:
+						</p>
+
+						<hr class="horizontal" />
+
+						<h:panelGrid columns="3" cellpadding="5">
+
+							<p:outputLabel for="select-project" value="Projekt: " />
+							<p:selectOneMenu id="select-project"
+								value="#{mbAdminArea.selectedProject}" style="width:150px">
+								<p:ajax listener="#{mbAdminArea.onProjectChange}"
+									update="delete-modul" />
+								<f:selectItem itemLabel="Select Project" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems value="#{mbAdminArea.projectData}" />
+							</p:selectOneMenu>
+							<div />
+
+							<p:outputLabel for="add-modul" value="Modul hinzufügen: " />
+							<p:inputText id="add-modul" value="#{mbAdminArea.addModul}" />
+							<p:commandButton value="Add" update="msgs"
+								action="#{mbAdminArea.onAddModul}" />
+
+							<p:outputLabel for="delete-modul" value="Modul löschen: " />
+							<p:selectOneMenu id="delete-modul"
+								value="#{mbAdminArea.delModul}" style="width:150px">
+								<f:selectItem itemLabel="Select Modul" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems value="#{mbAdminArea.modulData}" />
+							</p:selectOneMenu>
+							<p:commandButton value="Delete" update="msgs"
+								action="#{mbAdminArea.onDelModul}" />
+
+						</h:panelGrid>
+
+					</p:panel>
+				</div>
+
+				<div class="card margin-l-r">
+
+					<p:panel header="4. Mitarbeiterzuweisung"
+						style="margin-bottom:10px;">
+
+						<p>Bitte wählen Sie zunächst einen Nutzer und weisen Sie ihm
+							einem entsprechenden Projekt zu oder löschen Sie dieses aus
+							seiner Zuweisung:</p>
+
+						<hr class="horizontal" />
+
+						<h:panelGrid columns="5" cellpadding="5">
+
+							<p:outputLabel for="add-allocation-user" value="Mitarbeiter: " />
+							<p:selectOneMenu id="add-allocation-user"
+								value="#{mbAdminArea.addAllocationUser}" style="width:150px">
+								<p:ajax listener="#{mbAdminArea.onAddUserChange}"
+									update="add-allocation-project" />
+								<f:selectItem itemLabel="Select User" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems value="#{mbAdminArea.userData}" />
+							</p:selectOneMenu>
+							<p:outputLabel for="add-allocation-project" value="Projekt: " />
+							<p:selectOneMenu id="add-allocation-project"
+								value="#{mbAdminArea.addAllocationProject}" style="width:150px">
+								<f:selectItem itemLabel="Select Project" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems value="#{mbAdminArea.addAllocationData}" />
+							</p:selectOneMenu>
+							<p:commandButton value="Add Allocation" update="msgs"
+								action="#{mbAdminArea.onAddAllocation}" />
+
+							<p:outputLabel for="del-allocation-user" value="Mitarbeiter: " />
+							<p:selectOneMenu id="del-allocation-user"
+								value="#{mbAdminArea.delAllocationUser}" style="width:150px">
+								<p:ajax listener="#{mbAdminArea.onDelUserChange}"
+									update="del-allocation-project" />
+								<f:selectItem itemLabel="Select User" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems value="#{mbAdminArea.userData}" />
+							</p:selectOneMenu>
+							<p:outputLabel for="del-allocation-project" value="Projekt: " />
+							<p:selectOneMenu id="del-allocation-project"
+								value="#{mbAdminArea.delAllocationProject}" style="width:150px">
+								<f:selectItem itemLabel="Select Project" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems value="#{mbAdminArea.delAllocationData}" />
+							</p:selectOneMenu>
+							<p:commandButton value="Delete Allocation" update="msgs"
+								action="#{mbAdminArea.onDelAllocation}" />
+
+						</h:panelGrid>
+
+					</p:panel>
+				</div>
+
+				<h:panelGrid columns="3" cellpadding="5" class="margin-l-r"
+					style="margin-top: 50px; margin-bottom: 50px;">
+
+					<p:button class="btn-margin" value="Auswertung" outcome="client_overview.xhtml" />
+					<div class="placeholder-small" />
+					<p:button value="Stundenbogen" outcome="client_start.xhtml" />
+
+				</h:panelGrid>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+
+<!-- ===========================================================================
+timetable.xhtml - 	Die Seite stellt ein Tool zur Zeiterfassung für Mitarbeiter zur Verfügung. 
+					Zum korrekten Eintragen der Arbeitszeit, für einen Tag, muss ein User ein Projekt 
+					und ein dazu gehöriges Modul auswählen.            
+============================================================================ -->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<h:outputStylesheet library="css" name="myCss.css" />
+	<title>Header</title>
+	<meta charset="utf-8" />
+</h:head>
+
+<h:body>
+	<h:form class="top-h">
+
+		<a href="https://myfaces.apache.org/"> <h:graphicImage
+				library="img" name="jsf-logo.png" styleClass="csslogo" alt="JSF" />
+
+		</a>
+
+		<h:panelGrid columns="2">
+			<h:graphicImage library="img" name="timetable.png" alt="Logo" />
+			<h:outputText value="TIMETABLE - Zeiterfassun für Mitarbeiter mit JSF 2.3" styleClass="branding" />
+		</h:panelGrid>
+
+		<!--  ==================================================================   -->
+
+		<h:messages globalOnly="false" showDetail="true" showSummary="true" infoClass="msgInfo" warnClass="msgWarning" errorClass="msgError" fatalClass="msgFatal" />
+
+		<h3 class="margin-l-r">Zeiterfassungstool der Roman Empire GmbH</h3>
+	</h:form>
+</h:body>
+</html>

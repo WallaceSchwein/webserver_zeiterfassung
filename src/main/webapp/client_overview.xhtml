@@ -1,0 +1,186 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+
+<!-- ===========================================================================
+timetable.xhtml - 	Die Seite stellt ein Tool zur Auswertung der Erfassten Arbeitszeiten der Mitarbeiter zur Verfügung. 
+					Die Daten werden in einer Listenansicht ausgegeben und zusätzlich kann gefiltert und sortiert werden.            
+============================================================================ -->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head></h:head>
+
+<h:body>
+
+	<ui:composition template="/masterLayout.xhtml">
+
+		<ui:define name="title">Auswertung</ui:define>
+
+		<ui:define name="content">
+
+			<p class="sub-h margin-l-r">Bitte wählen Sie, nach welchen
+				Kriterien die vorhandenen Daten gefiltert und nach welchem Kriterium
+				sortiert werden soll.</p>
+
+			<script type="text/javascript">
+	    		PrimeFaces.locales ['de'] = {
+			        closeText: 'Schließen',
+			        prevText: 'Zurück',
+			        nextText: 'Weiter',
+			        monthNames: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
+			        monthNamesShort: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
+			        dayNames: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
+			        dayNamesShort: ['Son', 'Mon', 'Die', 'Mit', 'Don', 'Fre', 'Sam'],
+			        dayNamesMin: ['S', 'M', 'D', 'M ', 'D', 'F ', 'S'],
+			        weekHeader: 'Woche',
+			        firstDay: 1,
+			        isRTL: false,
+			        showMonthAfterYear: false,
+			        yearSuffix: '',
+			        timeOnlyTitle: 'Nur Zeit',
+			        timeText: 'Zeit',
+			        hourText: 'Stunde',
+			        minuteText: 'Minute',
+			        secondText: 'Sekunde',
+			        currentText: 'Aktuelles Datum',
+			        ampm: false,
+			        month: 'Monat',
+			        week: 'Woche',
+			        day: 'Tag',
+			        allDayText: 'Ganzer Tag',
+			        today: 'Heute',
+			        clear: 'Löschen'
+			    };
+			</script>
+
+			<script type="text/javascript">
+			    //<![CDATA[
+			    function dateTemplateFunc(date) {
+			        return '<span style="background-color:' + ((date.day < 21 && date.day > 10) ? '#81C784' : 'inherit') + ';border-radius:50%;width: 2.5rem;height: 2.5rem;line-height: 2.5rem;display: flex;align-items: center;justify-content: center;">' + date.day + '</span>';
+			    }
+			    //]]>
+			</script>
+
+			<style type="text/css">
+				.value {
+					font-weight: bold;
+				}
+			</style>
+
+			<h:form>
+				<div class="card margin-l-r">
+					<p:growl id="msgs" showDetail="true"
+						skipDetailIfEqualsSummary="true" />
+
+					<p:panel header="Filterkriterien" style="margin-bottom:10px;">
+
+						<p>Bitte setzen Sie hier Filterkriterien, falls gewünscht:</p>
+
+						<hr class="horizontal" />
+
+						<h:panelGrid columns="6" cellpadding="5">
+
+							<p:outputLabel for="user-filter" value="Mitarbeiter: " />
+							<p:selectOneMenu id="user-filter" value="#{mbOverview.user}"
+								style="width:150px">
+								<p:ajax listener="#{mbOverview.onUserChange}"
+									update="project-filter" />
+								<f:selectItem itemLabel="Select User" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems value="#{mbOverview.userData}" />
+							</p:selectOneMenu>
+							<p:outputLabel for="project-filter" value="Projekt: " />
+							<p:selectOneMenu id="project-filter"
+								value="#{mbOverview.project}" style="width:150px">
+								<p:ajax listener="#{mbOverview.onProjectChange}"
+									update="modul-filter" />
+								<f:selectItem itemLabel="Select Project" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems value="#{mbOverview.projectData}" />
+							</p:selectOneMenu>
+							<p:outputLabel for="modul-filter" value="Modul: " />
+							<p:selectOneMenu id="modul-filter" value="#{mbOverview.modul}"
+								style="width:150px">
+								<f:selectItem itemLabel="Select Modul" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems value="#{mbOverview.modulData}" />
+							</p:selectOneMenu>
+
+							<p:outputLabel for="start-date" value="Startdatum: " />
+							<p:datePicker id="start-date" value="#{mbOverview.startDate}"
+								showIcon="true" />
+							<p:outputLabel for="end-date" value="Enddatum: " />
+							<p:datePicker id="end-date" value="#{mbOverview.endDate}"
+								showIcon="true" />
+							<div />
+							<p:outputLabel for="end-date"
+								value="(Sie können auch nur ein Start- oder Enddatum wählen)" />
+
+						</h:panelGrid>
+
+					</p:panel>
+				</div>
+
+				<h:panelGrid columns="1" cellpadding="5" class="margin-l-r">
+					<p:commandButton class="btn-margin" id="btn-filter" value="Filtern"
+						update="datatable" action="#{mbOverview.onFilter}" />
+				</h:panelGrid>
+
+				<div class="card margin-l-r">
+
+					<p:panel header="Übersicht" style="margin-bottom:10px;">
+
+						<p>Liste der Erfassten Arbeitszeiten, der Mitarbeiter,
+							gefiltert nach den oben gewählten Kriterien:</p>
+
+						<hr class="horizontal" />
+
+						<h:panelGrid columns="1" cellpadding="5">
+
+							<p:dataTable var="eintrag" value="#{mbOverview.dataList}"
+								id="datatable">
+								<p:column headerText="Mitarbeiter" sortBy="#{eintrag.user}">
+									<h:outputText value="#{eintrag.user}" />
+								</p:column>
+
+								<p:column headerText="Projekt" sortBy="#{eintrag.project}">
+									<h:outputText value="#{eintrag.project}" />
+								</p:column>
+
+								<p:column headerText="Modul" sortBy="#{eintrag.modul}">
+									<h:outputText value="#{eintrag.modul}" />
+								</p:column>
+
+								<p:column headerText="Datum" sortBy="#{eintrag.strDate}">
+									<h:outputText value="#{eintrag.date}" />
+								</p:column>
+
+								<p:column headerText="Arbeitszeit in Stunden"
+									sortBy="#{eintrag.hours}">
+									<h:outputText value="#{eintrag.hours}" />
+								</p:column>
+							</p:dataTable>
+
+						</h:panelGrid>
+
+					</p:panel>
+				</div>
+
+				<h:panelGrid columns="3" cellpadding="5" class="margin-l-r"
+					style="margin-top: 50px; margin-bottom: 50px;">
+
+					<p:button class="btn-margin" value="Verwaltung" outcome="client_adminarea.xhtml" />
+					<div class="placeholder-small" />
+					<p:button value="Stundenbogen" outcome="client_start.xhtml" />
+
+				</h:panelGrid>
+
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

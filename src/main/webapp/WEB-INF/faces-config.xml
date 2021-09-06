@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE faces-config>
+
+<!-- ===========================================================================
+  faces-config.xml - JSF 2.3 Konfigurationsdatei
+  Verzeichnis: {Projekt}/src/main/webapp/WEB-INF/
+  Version: 2021-05-31, Lea Heilmann, Willi Kristen
+============================================================================ -->
+
+<faces-config version="2.3" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"                            
+              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee  
+              http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_3.xsd"> 
+
+  <application>
+    
+    <locale-config>
+      <default-locale>de</default-locale>
+      <supported-locale>en</supported-locale>
+    </locale-config>
+    
+  </application>
+
+  <managed-bean>
+    <managed-bean-name>mb_db</managed-bean-name>
+    <managed-bean-class>de.hwr.webapp.zeiterfassung.MbDb</managed-bean-class>
+    <managed-bean-scope>application</managed-bean-scope>
+
+    <managed-property>
+      <description>true: Connections werden über einen Connection pool 
+                         verwaltet
+      </description>
+      <property-name>use_pool</property-name>
+      <value>false</value>      
+    </managed-property>
+        
+    <managed-property>
+      <property-name>user</property-name>
+      <value>root</value>
+    </managed-property>
+    
+    <managed-property>
+      <property-name>pw</property-name>
+      <value></value>
+    </managed-property>
+    
+    <managed-property>
+      <property-name>constr</property-name>
+      <value>      
+        jdbc:mysql://localhost/zeiterfassung_db?serverTimezone=MET
+      </value>
+    </managed-property>
+    
+    <managed-property>
+      <property-name>logfile</property-name>
+      <value>/logs/browse.log</value>
+    </managed-property>    
+  </managed-bean>
+      
+</faces-config>
